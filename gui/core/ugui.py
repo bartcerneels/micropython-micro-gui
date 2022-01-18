@@ -14,6 +14,8 @@ from gui.core.colors import *
 from hardware_setup import ssd
 
 from gui.primitives import Pushbutton
+from gui.primitives.touch import Touch
+
 # Globally available singleton objects
 display = None  # Singleton instance
 ssd = None
@@ -50,8 +52,8 @@ class Input:
         # Count buttons
         self._nb = sum(1 for x in (nxt, sel, prev, incr, decr) if x is not None)
         # Mandatory buttons
-        self._next = Pushbutton(nxt)
-        self._sel = Pushbutton(sel, suppress=True)
+        self._next = Touch(nxt)
+        self._sel = Touch(sel, suppress=True)
         # Call current screen bound method
         self._next.press_func(Screen.ctrl_move, (_NEXT,))
         self._sel.release_func(Screen.sel_ctrl)
@@ -61,7 +63,7 @@ class Input:
             self._sel.double_func(self.adj_mode)  # Double click toggles adjust
         # Optional buttons
         if prev is not None:
-            self._prev = Pushbutton(prev)
+            self._prev = Touch(prev)
             self._prev.press_func(Screen.ctrl_move, (_PREV,))
         if encoder:
             _vb and print('Using encoder.')

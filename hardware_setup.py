@@ -7,7 +7,7 @@
 # ESP.IO36 Center
 
 
-from machine import Pin, SPI, freq
+from machine import TouchPad, Pin, SPI, freq
 import gc
 
 from drivers.st7789.st7789_4bit import *
@@ -23,10 +23,10 @@ ssd = SSD(spi, height=240, width=240, cs=pcs, dc=pdc, rst=prst)
 from gui.core.ugui import Display, quiet
 # quiet()
 # Create and export a Display instance
-# Define control buttons
-nxt = Pin(34, Pin.IN, Pin.PULL_UP)  # Move to next control
-sel = Pin(36, Pin.IN, Pin.PULL_UP)  # Operate current control
-# prev = Pin(17, Pin.IN, Pin.PULL_UP)  # Move to previous control
-# increase = Pin(16, Pin.IN, Pin.PULL_UP)  # Increase control's value
-# decrease = Pin(32, Pin.IN, Pin.PULL_UP)  # Decrease control's value
+
+# # Define control buttons
+# prv = TouchPad(Pin(27))  # P0 - BIG, Touch7
+nxt = TouchPad(Pin(12))
+sel = TouchPad(Pin(14))  # P2 - BIG, Touch6
+
 disp = Display(ssd, nxt, sel)
