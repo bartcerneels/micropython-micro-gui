@@ -25,8 +25,8 @@ from gui.core.ugui import Display, quiet
 # Create and export a Display instance
 
 # # Define control buttons
-# prv = TouchPad(Pin(27))  # P0 - BIG, Touch7
-nxt = TouchPad(Pin(12))
-sel = TouchPad(Pin(14))  # P2 - BIG, Touch6
+prv = TouchPad(Pin(27))  # P0 - BIG, Touch7
+sel = TouchPad(Pin(14))  # P1 - Big, Touch6
+nxt = TouchPad(Pin(13))  # P2 - BIG, Touch4
 
-disp = Display(ssd, nxt, sel)
+disp = Display(ssd, nxt, sel, prv)
