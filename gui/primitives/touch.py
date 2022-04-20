@@ -2,12 +2,18 @@ import uasyncio as asyncio
 import utime as time
 from . import launch, Delay_ms
 
+from machine import Pin
+from neopixel import NeoPixel
+
+pin = Pin(2, Pin.OUT)
+neopixels = NeoPixel(pin, 5)
+
 class Touch:
-    trigger_level = 100
+    trigger_level = 50
     sample_time = 10
     long_press_ms = 1000
     double_click_ms = 400
-    def __init__(self, touch, suppress=False):
+    def __init__(self, touch, led, suppress=False):
         self.touch = touch
         # press function
         self._pf = False
@@ -18,6 +24,8 @@ class Touch:
         self._ld = False  # Delay_ms instance for long press
         self._dd = False  # Ditto for doubleclick
 
+        self._led = led
+    
         # Get initial state
         self.state = self.rawstate()  
         # Thread runs forever
@@ -51,6 +59,13 @@ class Touch:
 
     # Current non-debounced logical button state: True == pressed
     def rawstate(self):
+        rel_level =  max(self.touch.read() - self.trigger_level, 0)
+        # print(self._led, rel_level)
+        if rel_level > 0:
+            neopixels[self._led] = (50 - min(50, rel_level), 0, 15)
+        else:
+            neopixels[self._led] = (0, 50, 0)
+        neopixels.write()
         return self.touch.read() < self.trigger_level
 
     # Return current state of switch (0 = pressed)

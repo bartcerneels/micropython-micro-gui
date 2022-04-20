@@ -52,8 +52,8 @@ class Input:
         # Count buttons
         self._nb = sum(1 for x in (nxt, sel, prev, incr, decr) if x is not None)
         # Mandatory buttons
-        self._next = Touch(nxt)
-        self._sel = Touch(sel, suppress=True)
+        self._next = Touch(nxt, 2)
+        self._sel = Touch(sel, 1, suppress=True)
         # Call current screen bound method
         self._next.press_func(Screen.ctrl_move, (_NEXT,))
         self._sel.release_func(Screen.sel_ctrl)
@@ -63,7 +63,7 @@ class Input:
             self._sel.double_func(self.adj_mode)  # Double click toggles adjust
         # Optional buttons
         if prev is not None:
-            self._prev = Touch(prev)
+            self._prev = Touch(prev, 0)
             self._prev.press_func(Screen.ctrl_move, (_PREV,))
         if encoder:
             _vb and print('Using encoder.')
