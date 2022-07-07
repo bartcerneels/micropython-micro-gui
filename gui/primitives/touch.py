@@ -60,12 +60,6 @@ class Touch:
     # Current non-debounced logical button state: True == pressed
     def rawstate(self):
         rel_level =  max(self.touch.read() - self.trigger_level, 0)
-        # print(self._led, rel_level)
-        if rel_level > 0:
-            neopixels[self._led] = (50 - min(50, rel_level), 0, 15)
-        else:
-            neopixels[self._led] = (0, 50, 0)
-        neopixels.write()
         return self.touch.read() < self.trigger_level
 
     # Return current state of switch (0 = pressed)
@@ -82,11 +76,18 @@ class Touch:
         while True:
             try:
                 touched = self.rawstate()
+                # print(self._led, rel_level)
+                if touched:
+                    neopixels[self._led] = (0, 0, 15)
+                else:
+                    neopixels[self._led] = (0, 15, 0)
+                neopixels.write()
                 if touched != self.state:
                     # State has changed: act on it now.
                     self.state = touched
                     if touched == True and self._pf:
                         launch(self._pf, self._pa)
+                        neopixels[self._led] = (50, 0, 0)
                     elif touched == False and self._rf:
                         launch(self._rf, self._ra)
             except ValueError:
